@@ -2,8 +2,8 @@
 This is the Back-End for Medpoint System, a platform that allows users to make various types of online medical reservations, including doctor consultations, laboratory tests, medical actions, and vaccinations.
 
 # Technologies
-- Framework: Raiden
 - Language: Golang
+- Framework: Raiden
 
 # Project Structures
 
