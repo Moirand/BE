@@ -4,8 +4,6 @@ import (
 	"medpoint/internal/models"
 	"net/http"
 
-	"github.com/sev-2/raiden/pkg/resource"
-
 	"github.com/sev-2/raiden"
 	"github.com/sev-2/raiden/pkg/db"
 )
@@ -28,46 +26,17 @@ type DoctorResponse struct {
 
 type DoctorController1 struct {
 	raiden.ControllerBase
-	Http    string `path:"/doctor/{doctor_id}" type:"rest"`
-	Model   models.Doctors
+	Http    string `path:"/doctor/{doctor_id}" type:"custom"`
 	Payload *DoctorRequest
-	Result  models.Doctors
+	Result  DoctorResponse
 }
 
 func (c *DoctorController1) Get(ctx raiden.Context) error {
 
-	doctor := models.Doctors{}
-
-	err := db.
-		NewQuery(ctx).
-		From(c.Model).
-		Eq("id", c.Payload.Id).
-		Single(&doctor)
-
-	if err != nil {
-		return ctx.SendErrorWithCode(http.StatusBadRequest, err)
-	}
-
-	return ctx.SendJson(c.Result)
-}
-
-func (c *DoctorController1) Put(ctx raiden.Context) error {
-
-	payload := models.Doctors{
-		UserId:               c.Payload.Body.UserId,
-		SpecialityId:         c.Payload.Body.SpecialityId,
-		HealthcareFacilityId: c.Payload.Body.HealthcareFacilityId,
-		LicenseNumber:        c.Payload.Body.LicenseNumber,
-		Biography:            c.Payload.Body.Biography,
-		ConcultationFee:      c.Payload.Body.ConcultationFee,
-		ExperienceYears:      c.Payload.Body.ExperienceYears,
-	}
-
-	err := db.
-		NewQuery(ctx).
+	err := db.NewQuery(ctx).
 		From(models.Doctors{}).
 		Eq("id", c.Payload.Id).
-		Update(payload, nil)
+		Single(&c.Result)
 
 	if err != nil {
 		return ctx.SendErrorWithCode(http.StatusBadRequest, err)
@@ -76,20 +45,45 @@ func (c *DoctorController1) Put(ctx raiden.Context) error {
 	return ctx.SendJson(c.Result)
 }
 
-func (c *DoctorController1) Delete(ctx raiden.Context) error {
+// func (c *DoctorController1) Put(ctx raiden.Context) error {
 
-	err := db.
-		NewQuery(ctx).
-		From(models.Doctors{}).
-		Eq("id", c.Payload.Id).
-		Delete()
+// 	payload := models.Doctors{
+// 		UserId:               c.Payload.Body.UserId,
+// 		SpecialityId:         c.Payload.Body.SpecialityId,
+// 		HealthcareFacilityId: c.Payload.Body.HealthcareFacilityId,
+// 		LicenseNumber:        c.Payload.Body.LicenseNumber,
+// 		Biography:            c.Payload.Body.Biography,
+// 		ConcultationFee:      c.Payload.Body.ConcultationFee,
+// 		ExperienceYears:      c.Payload.Body.ExperienceYears,
+// 	}
 
-	if err != nil {
-		return ctx.SendErrorWithCode(http.StatusBadRequest, err)
-	}
+// 	err := db.
+// 		NewQuery(ctx).
+// 		From(models.Doctors{}).
+// 		Eq("id", c.Payload.Id).
+// 		Update(payload, nil)
 
-	return ctx.SendJson(c.Result)
-}
+// 	if err != nil {
+// 		return ctx.SendErrorWithCode(http.StatusBadRequest, err)
+// 	}
+
+// 	return ctx.SendJson(c.Result)
+// }
+
+// func (c *DoctorController1) Delete(ctx raiden.Context) error {
+
+// 	err := db.
+// 		NewQuery(ctx).
+// 		From(c.Model).
+// 		Eq("id", c.Payload.Id).
+// 		Delete()
+
+// 	if err != nil {
+// 		return ctx.SendErrorWithCode(http.StatusBadRequest, err)
+// 	}
+
+// 	return ctx.SendJson(c.Result)
+// }
 
 type DoctorController2 struct {
 	raiden.ControllerBase
@@ -98,26 +92,26 @@ type DoctorController2 struct {
 	Result  DoctorResponse
 }
 
-func (c *DoctorController2) Post(ctx raiden.Context) error {
-	if err := resource.Import(&resource.Flags{UpdateStateOnly: true}, ctx.Config()); err != nil {
-		return ctx.SendErrorWithCode(http.StatusBadRequest, err)
-	}
-
-	return ctx.SendJson(c.Result)
-}
+// func (c *DoctorController2) Post(ctx raiden.Context) error {
+// 	if err := resource.Import(&resource.Flags{UpdateStateOnly: true}, ctx.Config()); err != nil {
+// 		return ctx.SendErrorWithCode(http.StatusBadRequest, err)
+// 	}
+//
+// 	return ctx.SendJson(c.Result)
+// }
 
 func (c *DoctorController2) Get(ctx raiden.Context) error {
 
-	var doctor []models.Doctors
+	doctorList := []DoctorResponse{c.Result}
 
 	err := db.
 		NewQuery(ctx).
 		From(models.Doctors{}).
-		Get(&doctor)
+		Get(&doctorList)
 
 	if err != nil {
 		return ctx.SendErrorWithCode(http.StatusBadRequest, err)
 	}
 
-	return ctx.SendJson(c.Result)
+	return ctx.SendJson(doctorList)
 }

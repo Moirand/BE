@@ -1,23 +1,24 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/sev-2/raiden/pkg/db"
-	"time"
 )
 
 type Doctors struct {
 	db.ModelBase
-	Id                   uuid.UUID  `json:"id,omitempty" column:"name:id;type:uuid;primaryKey;nullable:false;default:gen_random_uuid()"`
-	UserId               uuid.UUID  `json:"user_id,omitempty" column:"name:user_id;type:uuid;nullable:false"`
-	SpecialityId         uuid.UUID  `json:"speciality_id,omitempty" column:"name:speciality_id;type:uuid;nullable:false"`
-	HealthcareFacilityId uuid.UUID  `json:"healthcare_facility_id,omitempty" column:"name:healthcare_facility_id;type:uuid;nullable:false"`
-	LicenseNumber        string     `json:"license_number,omitempty" column:"name:license_number;type:varchar;nullable:false;unique"`
-	Biography            *string    `json:"biography,omitempty" column:"name:biography;type:text;nullable"`
-	ConcultationFee      float64    `json:"concultation_fee,omitempty" column:"name:concultation_fee;type:numeric;nullable:false"`
-	ExperienceYears      int16      `json:"experience_years,omitempty" column:"name:experience_years;type:smallint;nullable:false"`
-	CreatedAt            time.Time  `json:"created_at,omitempty" column:"name:created_at;type:timestamp;nullable:false;default:now()"`
-	UpdatedAt            *time.Time `json:"updated_at,omitempty" column:"name:updated_at;type:timestamp;nullable"`
+	Id                   uuid.UUID  `json:"id" column:"name:id;type:uuid;primaryKey;nullable:false;default:gen_random_uuid()"`
+	UserId               uuid.UUID  `json:"user_id" column:"name:user_id;type:uuid;nullable:false"`
+	SpecialityId         uuid.UUID  `json:"speciality_id" column:"name:speciality_id;type:uuid;nullable:false"`
+	HealthcareFacilityId uuid.UUID  `json:"healthcare_facility_id" column:"name:healthcare_facility_id;type:uuid;nullable:false"`
+	LicenseNumber        string     `json:"license_number" column:"name:license_number;type:varchar;nullable:false;unique"`
+	Biography            *string    `json:"biography" column:"name:biography;type:text;nullable"`
+	ConcultationFee      float64    `json:"concultation_fee" column:"name:concultation_fee;type:numeric;nullable:false"`
+	ExperienceYears      int16      `json:"experience_years" column:"name:experience_years;type:smallint;nullable:false"`
+	CreatedAt            time.Time  `json:"created_at" column:"name:created_at;type:timestamp;nullable:false;default:now()"`
+	UpdatedAt            *time.Time `json:"updated_at" column:"name:updated_at;type:timestamp;nullable"`
 
 	// Table information
 	Metadata string `json:"-" schema:"public" tableName:"doctors" rlsEnable:"true" rlsForced:"false"`
