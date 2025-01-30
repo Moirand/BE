@@ -1,9 +1,10 @@
 package models
 
 import (
+	"time"
+
 	"github.com/google/uuid"
 	"github.com/sev-2/raiden/pkg/db"
-	"time"
 )
 
 type MedicalRecords struct {
@@ -26,7 +27,7 @@ type MedicalRecords struct {
 	Acl string `json:"-" read:"" write:""`
 
 	// Relations
-	Appointment *Appointments `json:"appointment,omitempty" onUpdate:"no action" onDelete:"no action" join:"joinType:hasOne;primaryKey:id;foreignKey:appointment_id"`
-	Doctor      *Doctors      `json:"doctor,omitempty" onUpdate:"no action" onDelete:"no action" join:"joinType:hasOne;primaryKey:id;foreignKey:doctor_id"`
-	User        *Users        `json:"user,omitempty" onUpdate:"no action" onDelete:"no action" join:"joinType:hasOne;primaryKey:id;foreignKey:user_id"`
+	Appointment *Appointments `json:"appointments,omitempty" onUpdate:"no action" onDelete:"no action" join:"joinType:hasOne;primaryKey:id;foreignKey:appointment_id"`
+	Doctor      *Doctors      `json:"doctors,omitempty" onUpdate:"no action" onDelete:"no action" join:"joinType:hasOne;primaryKey:id;foreignKey:doctor_id"`
+	User        *Users        `json:"users,omitempty" onUpdate:"no action" onDelete:"no action" join:"joinType:hasOne;primaryKey:id;foreignKey:user_id"`
 }
